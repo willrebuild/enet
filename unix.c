@@ -224,7 +224,7 @@ enet_address_get_host (const ENetAddress * address, char * name, size_t nameLeng
         return 0;
     }
     if (err != EAI_NONAME)
-      return 0;
+      return -1;
 #else
 #warning "Really use gethostbyaddr() with IPv6? Not all platforms support it."
     struct in6_addr in;
