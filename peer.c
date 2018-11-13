@@ -268,6 +268,27 @@ enet_peer_reset_outgoing_commands (ENetList * queue)
 }
 
 static void
+enet_peer_reset_outgoing_commands_not_free (ENetList * queue)
+{
+	ENetOutgoingCommand * outgoingCommand;
+
+	while (! enet_list_empty (queue))
+	{
+		outgoingCommand = (ENetOutgoingCommand *) enet_list_remove (enet_list_begin (queue));
+
+		if (outgoingCommand -> packet != NULL)
+		{
+			-- outgoingCommand -> packet -> referenceCount;
+
+			if (outgoingCommand -> packet -> referenceCount == 0)
+				enet_packet_destroy (outgoingCommand -> packet);
+		}
+
+		//enet_free (outgoingCommand);
+	}
+}
+
+static void
 enet_peer_remove_incoming_commands (ENetList * queue, ENetListIterator startCommand, ENetListIterator endCommand)
 {
     ENetListIterator currentCommand;    
@@ -316,7 +337,7 @@ enet_peer_reset_queues (ENetPeer * peer)
     while (! enet_list_empty (& peer -> acknowledgements))
       enet_free (enet_list_remove (enet_list_begin (& peer -> acknowledgements)));
 
-    enet_peer_reset_outgoing_commands (& peer -> sentReliableCommands);
+    enet_peer_reset_outgoing_commands_not_free (& peer -> sentReliableCommands);	//try to prevent dump
     enet_peer_reset_outgoing_commands (& peer -> sentUnreliableCommands);
     enet_peer_reset_outgoing_commands (& peer -> outgoingReliableCommands);
     enet_peer_reset_outgoing_commands (& peer -> outgoingUnreliableCommands);
