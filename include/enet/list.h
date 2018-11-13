@@ -15,8 +15,10 @@ typedef struct _ENetListNode
 
 typedef ENetListNode * ENetListIterator;
 
+#define DEFAND_FLAG  0x987abc21
 typedef struct _ENetList
 {
+   enet_uint32 defandFlag;
    ENetListNode sentinel;
 } ENetList;
 

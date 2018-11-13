@@ -15,6 +15,8 @@ enet_list_clear (ENetList * list)
 {
    list -> sentinel.next = & list -> sentinel;
    list -> sentinel.previous = & list -> sentinel;
+
+   list->defandFlag = DEFAND_FLAG;
 }
 
 ENetListIterator
