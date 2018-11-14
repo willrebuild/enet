@@ -272,7 +272,7 @@ enet_peer_reset_outgoing_commands_not_free (ENetList * queue)
 {
 	ENetOutgoingCommand * outgoingCommand;
 
-	//Ìí¼Ó·À»¤flag
+	//add defand flag
 	if (queue->defandFlag != DEFAND_FLAG) {
 		enet_list_clear (queue);
 		return;
